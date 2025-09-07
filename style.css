@@ -10,4 +10,8 @@
   overflow: hidden;
 }
 
+#about_list li{
+  list-style-type: disc;
+  margin-left: 2.5rem;
+}
 
