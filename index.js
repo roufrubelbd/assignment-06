@@ -133,7 +133,7 @@ const showAllPlants = (allPlants) => {
         <span class="text-sm">$ ${plant.price}</span>
     </div>
     <div class="card-actions justify-center">
-      <button class="btn bg-green-600 text-white rounded-4xl w-full">Add to Cart</button>
+      <button onclick="getNameAndPriceById(${plant.id})" class="btn bg-green-600 text-white rounded-4xl w-full add_to_cart" id="${plant.id}">Add to Cart</button>
     </div>
   </div>
 </div>
@@ -141,6 +141,68 @@ const showAllPlants = (allPlants) => {
     });
 };
 
+
+// ---------------- add to cart button functionalities -----------------
+
+
+let cart = [];
+const getNameAndPriceById = async (id) => {
+  const cartPlants = document.getElementById('cart_plants');
+  const totalPrice = document.getElementById('total_price');
+  const response = await fetch('https://openapi.programming-hero.com/api/plants');
+  const data = await response.json();
+  const allPlants = data.plants;
+  const plant = allPlants.find(singlePlant => singlePlant.id === id);
+  const name = plant.name;
+  const price = plant.price;
+  const quantity = 1;
+  cart.push(plant);
+  let total = 0;
+  cart.forEach(item => {
+    const itemPrice = item.price * quantity;
+    total += itemPrice;
+    totalPrice.innerText = total;
+  });
+  cartPlants.innerHTML += `
+  <div class="flex justify-between items-center px-2 py-2 bg-green-50 border border-green-200 rounded-md mb-2">
+    <div>
+      <p class="font-bold">${name}</p>
+    <p class="text-sm text-gray-500">$ ${price} x ${quantity}</p>
+    </div>
+    <div>
+      <button onclick="removeFromCart(${plant.id})" class="btn btn-sm"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+  `;
+}
+
+
+ // --------- remove plant from cart -----------------
+const removeFromCart = (id) => {
+ 
+  cart = cart.filter(item => item.id !== id);
+
+  const cartPlants = document.getElementById('cart_plants');
+  const totalPrice = document.getElementById('total_price');
+  cartPlants.innerHTML = "";
+  let total = 0;
+  cart.forEach(plant => {
+    total += plant.price; 
+    cartPlants.innerHTML += `
+      <div class="flex justify-between items-center px-2 py-2 bg-green-50 border border-green-200 rounded-md mb-2">
+        <div>
+          <p class="font-bold">${plant.name}</p>
+          <p class="text-sm text-gray-500">$ ${plant.price} x 1</p>
+        </div>
+        <div>
+          <button onclick="removeFromCart(${plant.id})" class="btn btn-sm"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+    `;
+  });
+
+  totalPrice.innerText = total;
+};
 
 // -------------- call the load functions -----------------
 loadAllPlants();
