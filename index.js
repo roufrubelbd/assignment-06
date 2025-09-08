@@ -3,12 +3,6 @@
 const categoriesContainer = document.getElementById('categories_container');
 const allCategoriesContainerById = document.getElementById('all_categories_container_by_id');
 const treesCardContainer = document.getElementById('trees_card_container');
-// console.log(allCategoriesContainerById.childNodes)
-
-
-// ------------------ 
-// all plants
-// -------------------
 
 
 // ---------------- load categories menu from api -----------------
@@ -38,7 +32,7 @@ const showCategories = (categories) => {
     //  allCategoriesContainerById
     allCategoriesContainerById.addEventListener("click", (e) => {
     const allLi = allCategoriesContainerById.querySelectorAll("li");
-    // console.log(allLi[0].innerHTML);
+    
     allLi.forEach((li) => {
       li.classList.remove("bg-green-600", "text-white");
     });
@@ -56,7 +50,6 @@ const showCategories = (categories) => {
 const loadTreesByCategory = async (categoryId) => {
     if (categoryId === "all_trees_01") {
         loadAllPlants();
-        // return;
     } else {
         try {
         const response = await fetch(`https://openapi.programming-hero.com/api/category/${categoryId}`);
@@ -74,7 +67,6 @@ const loadTreesByCategory = async (categoryId) => {
 const showTreesByCategory = (trees) => {
     treesCardContainer.innerHTML = "";
     trees.forEach(tree => {
-        console.log(tree)
         treesCardContainer.innerHTML += `
         <div class="card bg-white shadow-sm h-fit">
   <figure class="h-40">
@@ -90,7 +82,7 @@ const showTreesByCategory = (trees) => {
         <span class="text-sm">$ ${tree.price}</span>
     </div>
     <div class="card-actions justify-center">
-      <button class="btn bg-green-600 text-white rounded-4xl w-full">Add to Cart</button>
+      <button onclick="getNameAndPriceById(${tree.id})" class="btn bg-green-600 text-white rounded-4xl w-full add_to_cart" id="${tree.id}">Add to Cart</button>
     </div>
   </div>
 </div>
