@@ -71,7 +71,7 @@ const showTreesByCategory = (trees) => {
     treesCardContainer.innerHTML = "";
     trees.forEach(tree => {
         treesCardContainer.innerHTML += `
-        <div class="card bg-white shadow-sm h-fit">
+        <div class="card bg-white shadow-sm h-fit mb-4">
   <figure class="h-40">
     <img
       src="${tree.image}"
@@ -114,7 +114,7 @@ const showAllPlants = (allPlants) => {
     allPlants.forEach(plant => {
         // console.log(plant)
         treesCardContainer.innerHTML += `
-        <div class="card bg-white shadow-sm">
+        <div class="card bg-white shadow-sm mb-4">
   <figure class="h-40">
     <img
       src="${plant.image}"
