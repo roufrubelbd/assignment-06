@@ -3,6 +3,9 @@
 const categoriesContainer = document.getElementById('categories_container');
 const allCategoriesContainerById = document.getElementById('all_categories_container_by_id');
 const treesCardContainer = document.getElementById('trees_card_container');
+const plantModal = document.getElementById('plant_modal')
+const modalContent = document.getElementById('modal_content')
+
 
 
 // ---------------- load categories menu from api -----------------
@@ -118,7 +121,7 @@ const showAllPlants = (allPlants) => {
       alt="Shoes" />
   </figure>
   <div class="card-body">
-    <h2 class="card-title">${plant.name}</h2>
+    <h2 data-id="${plant.id}" class="card-title">${plant.name}</h2>
     <p class="text-sm line-shorten">${plant.description}</p>
     <div class="card-actions justify-between mt-4 font-semibold">
         <span class="text-sm bg-green-200 px-2 py-1 rounded-md">${plant.category}</span>
@@ -195,6 +198,41 @@ const removeFromCart = (id) => {
 
   totalPrice.innerText = total;
 };
+
+
+// -------------- modal showing here -----------------
+
+treesCardContainer.addEventListener("click", async (e) => {
+      plantViewDetails(e);
+
+  });
+
+plantViewDetails = (e) => {
+const id = e.target.getAttribute("data-id");
+
+  fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
+  .then(res=> res.json())
+  .then(data => {
+    console.log(data)
+   showPlantDetails(data.plants);
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+}
+
+const showPlantDetails = (plants) => {
+    plantModal.showModal()
+    modalContent.innerHTML = `
+            <h2 class="font-bold my-4 text-2xl">${plants.name}</h2>
+            <img class="" src="${plants.image}" />
+            <p class="font-bold my-2 text-xl">Category: ${plants.category}</p>
+            <p class="font-bold my-4 text-2xl">Price: $ ${plants.price}</p>
+            <p class="my-2 text-gray-600"><span class="font-bold text-black">Description:</span> ${plants.description}</p>
+    `
+}
+
 
 // -------------- call the load functions -----------------
 loadAllPlants();
