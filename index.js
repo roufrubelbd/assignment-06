@@ -78,7 +78,7 @@ const showTreesByCategory = (trees) => {
       alt="Shoes" />
   </figure>
   <div class="card-body">
-    <h2 class="card-title">${tree.name}</h2>
+    <h2 data-id="${tree.id}" class="card-title">${tree.name}</h2>
     <p class="text-sm line-shorten">${tree.description}</p>
     <div class="card-actions justify-between mt-4 font-semibold">
         <span class="text-sm bg-green-200 px-2 py-1 rounded-md">${tree.category}</span>
@@ -203,6 +203,9 @@ const removeFromCart = (id) => {
 // -------------- modal showing here -----------------
 
 treesCardContainer.addEventListener("click", async (e) => {
+  if (e.target.localName !== "h2") {
+    return;
+  }
       plantViewDetails(e);
 
   });
